@@ -17,7 +17,7 @@ public class MyFirstRestController {
     private static final Logger log = LoggerFactory.getLogger(MyFirstRestController.class);
 
     private final GreetingService greetingService;
-
+//@Autowired - optional. Not good approach. Only in tests
     //dependency injection = providing required collaborators/dependencies by Spring
     public MyFirstRestController(GreetingService greetingService) {
         this.greetingService = greetingService;
