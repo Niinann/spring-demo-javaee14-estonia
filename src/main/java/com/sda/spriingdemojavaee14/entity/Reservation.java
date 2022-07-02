@@ -1,30 +1,32 @@
 package com.sda.spriingdemojavaee14.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Reservation {
     Long id;
 
-    //long
     Long tableNumber;
 
-    LocalDateTime startbookingTime;
+    LocalDateTime startBookingTime;
 
     LocalDateTime endBookingTime;
 
     String surname;
 
-    String phonenumber;
+    String phoneNumber;
 
     String email;
 
     int numberOfPeople;
 
     String address;
-
 }
