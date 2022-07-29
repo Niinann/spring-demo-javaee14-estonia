@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -39,8 +40,9 @@ public class ReservationRestController {
 // /reservations/1234
 // /reservations/998
 // @PathVariable("id") get id value from url and use for reservationId
-// 200 if there is result and 404 if wrong url was used by client
-    public ResponseEntity<Reservation> getReservationById(@PathVariable("id") Long reservationId) {
+// 200 if there is result and response: ResponseEntity<Reservation>
+// and 404 if wrong url was used by client and response: ResponseEntity<GenericError>
+    public ResponseEntity<?> getReservationById(@PathVariable("id") Long reservationId) {
         log.info("trying to find reservation by id: [{}]", reservationId);
 
         //return reservationService.findReservationById(reservationId);
@@ -50,11 +52,30 @@ public class ReservationRestController {
 //        return ResponseEntity.status(HttpStatus.OK)
 //                .body(responseBody);
 
+//..................................
+//        ResponseEntity<Reservation> result = ResponseEntity.notFound().build();
+//        if (responseBody != null) {
+//            result = ResponseEntity.ok(responseBody);
+//        }
+//        return ResponseEntity.ok(responseBody);
+//    }
+//.................................
 
-        ResponseEntity<Reservation> result = ResponseEntity.notFound().build();
+
         if (responseBody != null) {
-            result = ResponseEntity.ok(responseBody);
+            return ResponseEntity.ok(responseBody);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    GenericError.builder().build()
+                            .responseCode(404)
+                            .timestamp(LocalDateTime.now())
+                            .errorMessage("You provided wrong id:" + reservationId)
+                            .path("/reservation/" + reservationId)
+                                .path() //TODO: use URI class
+                            .build()
+            );
         }
-        return ResponseEntity.ok(responseBody);
+
     }
+
 }
